@@ -1,8 +1,38 @@
 # Adjusted P values in R 
 
+# Done using R as implemented through R studio 
+# using p.adjust() package
+
+# Example data "Pvals.txt"
+ID	p.val
+2d	0.0024
+2r	0.0189
+2p	0.019
+8d	0.108
+8r	0.233
+
+# Reason for analysis: 
+
 # When carrying out repeated tests for significant differences in mean
 # all p values should be corrected in order to take into consideration
 # error rates (because the more tests you do, the more chance you have of 
 # getting a false positive because of 0.05 error rate)
 
-# 
+# What kind of data you should have to use this analysis: a list of p values eg from a series of T tests
+
+# Import data into R
+p <- read.table("Pvals.txt", header = TRUE, sep="\t" )
+pvals <- p[,2] # defining column 2 of dataset as pvals
+
+# or just import string of p values straight like this: 
+pvals = c(0.0024, 0.0189, 0.417, 0.108, 0.233, 0.5021, 0.518, 0.00173, 0.7466, 7.75E-06, 0.018776354, 0.78768, 0.0023, 1.00E-07, 0.1455, 0.4095, 0.8654, 0.007, 0.1796, 0.062, 0.4729, 0.0233, 0.004, 0.0986)
+BONF = p.adjust(pvals, "bonferroni") # using very conservative bonferroni method
+HOLM = p.adjust(pvals, "holm") # less conservative holm
+FDR = p.adjust(pvals, "fdr") # and least conservative false discovery rate
+# can read about each of these methods to decide which is best for your data/ you are comfortable with
+
+res = cbind(pvals, FDR=round(FDR, 3), BONF=round(BONF, 3), HOLM=round(HOLM,3)) # make these strings into a table of combined data
+res # print to check
+
+
+write.table(res, "AdjustedPval_coEx.txt", sep="\t") # write out table to wkdir
