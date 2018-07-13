@@ -57,16 +57,16 @@ tapply(X = MyDataFrame$NumberBacteria, INDEX=list(MyDataFrame$Treatment), FUN=sh
 # the output tests normality of data from each of my factors in Treatment 
 # if all p values > 0.01 then data is normal and do ANOVA and Tukey as above
 # if one or more p values are <0.05 then not all data is normal and 
-# it is better to do a Kruskal Wallis which (I think) is more stringent and 
-# doesnt assume normality
+# it is better to do a Kruskal Wallis which is doesnt assume normality
 
 kruskal.test(MyDataFrame$NumberBacteria ~ MyDataFrame$Treatment) # run test
+
 #  p-value = 0.05817 # ie shows how important to consider normality as in anova we have sig diff but not here. 
 
 # if p value was <0.01 again we reject the null hypotheses that there is 
 # no effect of your treatment upon our counts 
-# Next, if sig P value, do a multiple comparisons test to see between which
-# here, as we did a kruskal, we'll do a dunn test to see where differences lie
+# However, if p value is significant, do a multiple comparisons test to see between which
+# Here, as we did a kruskal, we'll do a dunn test to see where differences lie
 
 library(dunn.test) # load package
 
